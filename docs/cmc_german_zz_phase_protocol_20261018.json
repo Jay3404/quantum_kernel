@@ -1,0 +1,21 @@
+{
+  "run_id": "cmc_20261018_german_zz_phase",
+  "authorization": "사용자가 ZZ 위험 위상 방법을 German 계열에서 실행하도록 요청한 별도 탐색 후속 실험이다. 이전 스모크 승격 판정을 변경하지 않는다.",
+  "datasets": ["german_numeric", "south_german"],
+  "source_run": "cmc_20261018_single_811",
+  "seeds": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+  "methods": ["zz_phase"],
+  "arms": ["quantum", "separable", "shuffled"],
+  "lambdas": [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00],
+  "C_grid": [0.01, 1.0, 100.0],
+  "gamma_factors": [0.1, 1.0, 10.0],
+  "classical_variants": ["baseline", "append", "shift", "polynomial", "aligned_rbf", "original_convex", "original_feature_specific"],
+  "alignment": {"sample_size": 128, "optimizer": "scipy Powell", "maxfev": 24, "quantum_alpha_bounds": [0.1, 2.0], "risk_gain_bounds": [0.25, 4.0], "classical_gamma_bounds": [0.1, 10.0]},
+  "split": "기존 공통 층화 8:1:1 분할. 각 자료 1000행 전체, 학습800/검증100/테스트100. PCA와 LR은 기존 학습 전용 캐시를 검증하여 재사용한다. 표본 제한 없음.",
+  "circuit": "PCA7의 무절단 학습 min-max 각도, ZZ feature map reps2/linear/alpha0.5 뒤 RZ(pi*lambda*(training-midrank(LR)-0.5)*7*normalized_abs_LR_weight). 위험 주입은 단일 큐비트 RZ이며 위험 조건 ZZ 결합이나 추가 큐비트가 아니다.",
+  "selection": "Business Cost=5FN+FP. 양수 lambda/C/임계값과 최선 고전 모델을 검증100행으로 선택하고 잠근 뒤 테스트 정답을 읽는다. 모든 후보 SVC는 학습800행 전체에 한 번 적합하며 앙상블, SVM 확률 보정, 선택 후 재적합은 없다. 무주입 lambda0은 별도 기준이다.",
+  "controls": "동일 reps2 ZZ 무주입, 얽힘 제거 Z 회로, 분할별 위험 순위 독립 셔플, 같은 PCA7/LR 정보를 사용하는 넓은 RBF 탐색 및 RF/XGBoost/LR. 이전 여섯 모델 범주의 무절단 reps1 참조도 별도 저장한다.",
+  "statistics": "동일 자료/시드/테스트의 비용 차이(대조-제안), 반복 분할 중복을 근사 보정한 t95%구간과 원p. 주 비교는 두 자료*여섯 대비=12개의 한 Holm군. 고정 lambda20개 프로파일은 별도 240비교 Holm군. 각 시드의 방향과 평균 상대 비용 감소율도 모두 보고한다. 테스트로 lambda를 다시 선택하지 않는다.",
+  "interpretation": "앞선 결과를 본 뒤 사용자 요청으로 수행하는 탐색 후속 실험이며 미사용 확증 테스트가 아니다. 두 German 자료는 같은 원자료 계열이므로 독립 자료 두 개의 재현으로 세지 않는다. 동일 전처리 캐시와 겹치는 시드를 재사용한다. 조건 탐색 예산은 고전 모델이 더 넓다. 양자 내부 개선과 고전 대비 우위를 구분한다.",
+  "execution": "A100 호스트 CPU Aer double 정확 상태벡터, 7큐비트, BLAS/Aer1스레드, 작업12개 병렬. 실제 QPU/샷/잡음/GPU가속 또는 계산 복잡도 우위 실험이 아니다. 이전 결과와 FICO는 보존. 실패 자동 재시도/재부팅 자동 재시작 없음."
+}

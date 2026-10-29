@@ -1,144 +1,77 @@
-# Risk-Aware Quantum Kernel Experiments for Credit Risk
+# Risk-Conditioned Kernel Learning
 
-This repository contains the reproducibility package for a Soft Computing submission on cost-sensitive credit risk classification with risk-aware quantum kernel embeddings.
+Research code and aggregated results for cost-sensitive credit classification
+with classical RBF and simulated quantum fidelity kernels.
 
-The core idea is deliberately narrow: a classical risk model estimates sample-level bad/default probability, and that risk signal is injected into the input representation used by a Quantum Support Vector Classifier (QSVC). The goal is not to claim universal quantum superiority. The goal is to test whether a risk-aware quantum feature map can reduce false-negative-heavy business cost on public credit benchmarks.
-
-## Quick Path
-
-Start here for the paper code, result tables, and reproduction commands.
-
-| Path | Purpose |
-| --- | --- |
-| [`code/`](code/) | Reproducible experiment code for the six benchmark datasets |
-| [`code/README.md`](code/README.md) | Main execution protocol and command examples |
-| [`code/RESULTS.md`](code/RESULTS.md) | Curated result tables and paper-facing interpretation |
-| [`data/README.md`](data/README.md) | Dataset inventory, required filenames, targets, and redistribution notes |
-
-## Method Summary
-
-For each dataset and seed, the experiment protocol is:
-
-1. Split the data into train and held-out test partitions.
-2. Preprocess tabular features and compress them to seven PCA dimensions.
-3. Fit a classical risk estimator on the training data.
-4. Transform the PCA representation with one of two risk-aware embeddings.
-5. Rescale inputs to the quantum feature-map range.
-6. Fit QSVC models and evaluate only once on the held-out test set.
-
-The main evaluated models are:
-
-| Model | Description |
-| --- | --- |
-| Baseline QSVC | QSVC on the shared PCA representation without risk injection |
-| Convex risk-aware QSVC | Interpolates between the baseline representation and a risk-amplified representation |
-| Feature-specific risk-aware QSVC | Uses feature importance from the classical risk model to weight the risk injection by feature |
-| Classical baselines | Logistic Regression, RBF-SVM, Random Forest, XGBoost, and classical SVC on PCA features |
-
-Lambda selection is performed on an inner validation split within the training set. The held-out test set is not used for lambda selection.
-
-## Main Experimental Scope
-
-The code covers six public credit-risk datasets:
-
-| Dataset folder | Default setting |
-| --- | --- |
-| `code/german_numeric` | Statlog German numeric, full dataset |
-| `code/south_german` | South German Credit, full dataset |
-| `code/australian` | Australian Credit Approval, full dataset |
-| `code/taiwan` | Taiwan default of credit card clients, informative 10,000-sample subset |
-| `code/give_me_some_credit` | Give Me Some Credit, informative 10,000-sample subset |
-| `code/fico_heloc` | FICO HELOC, full dataset |
-
-The larger datasets are evaluated on controlled subsets where exact quantum-kernel simulation would otherwise be computationally expensive.
-
-## Key Result Reading
-
-Use the results as dataset-dependent evidence, not as a universal performance claim.
-
-| Dataset | Strongest paper-facing takeaway |
-| --- | --- |
-| German Numeric | Risk-aware QSVC reduces false-negative-heavy business cost relative to baseline QSVC |
-| South German | Risk-aware QSVC gives one of the clearest cost-sensitive improvements |
-| Australian | Convex risk-aware QSVC improves cost, while feature-specific weighting is not consistently helpful |
-| Taiwan | Risk-aware QSVC is roughly competitive, with only small cost movement |
-| Give Me Some Credit | Risk-aware QSVC is not a clear winner against stronger classical baselines |
-| FICO HELOC | Baseline/risk-aware QSVC are close; Random Forest and XGBoost are strong classical references |
-
-The main paper message should therefore be: risk-aware quantum embeddings can be useful under some credit-risk data geometries, especially when the induced representation improves bad-class recall enough to offset false-positive cost.
-
-## Quick Reproduction
-
-Install dependencies for the code:
-
-```bash
-python -m venv .venv
-. .venv/bin/activate
-pip install -r code/requirements.txt
-```
-
-Run all QSVC experiments from the repository root:
-
-```bash
-python code/run_all.py --data-root data --seeds 10 20 30 40 50
-```
-
-Run one dataset:
-
-```bash
-cd code/australian
-python run_experiment.py --data-path ../../data/australian.dat
-```
-
-Outputs are written to each dataset's `results/` directory:
-
-| File | Meaning |
-| --- | --- |
-| `raw_results.csv` | Per-seed test metrics |
-| `summary_mean_std.csv` | Mean/std summary across seeds |
-| `lambda_validation_results.csv` | Inner-validation lambda sweep results |
-| `metadata.json` | Configuration and leakage-control metadata |
+The study examines three questions: whether customer-specific risk scores are
+useful, whether the base kernel adds value beyond those scores, and how changes
+in kernel geometry relate to classification cost. The main constructions are
+XGBoost Soft Gate and Rank Append.
 
 ## Repository Layout
 
-```text
-.
-├── data/                      # Dataset files or local placeholders; see data/README.md
-├── code/                      # Reproducibility package
-│   ├── _shared/               # Shared pipeline implementation
-│   ├── australian/            # Dataset-specific runner and config
-│   ├── fico_heloc/
-│   ├── german_numeric/
-│   ├── give_me_some_credit/
-│   ├── south_german/
-│   ├── taiwan/
-│   ├── results/
-│   ├── supplementary_results/
-│   └── run_all.py
-├── pyproject.toml             # Poetry environment metadata
-└── poetry.lock
-```
-
-## Public-Release Notes
-
-Before making the repository public, confirm:
-
-| Item | Status |
+| Directory | Contents |
 | --- | --- |
-| Dataset redistribution | Check each source license; do not publish third-party data if redistribution is not allowed |
-| License | Add a project license selected by the authors |
-| Citation | Add final DOI/arXiv/manuscript citation when available |
-| Results | Treat `code/results/` as the paper-facing result bundle |
+| `code/` | Original experiment, kernel, reporting and validation implementations, with required historical dependencies |
+| `analysis/` | Portable recomputation of the supplied aggregate statistics |
+| `results/` | Seed-level classification summaries, paired differences, complete comparison families, geometry and runtime summaries |
+| `docs/` | Reproduction instructions, analysis definitions and frozen protocols |
+| `environments/` | Original server dependency lock and environment descriptions |
+| `data/` | Benchmark acquisition instructions; download destination |
+| `tests/` | Tests for the portable aggregate replay |
 
-## Suggested Citation
+`PUBLIC_MANIFEST.json` identifies the files in this code-and-aggregate release.
+The source identifiers recorded in results describe the original experiment
+lineage; `results/source_map.json` maps the supplied copies to that lineage.
 
-The final citation should be added after journal submission metadata is fixed.
+## Reproduce the Aggregate Statistics
 
-```bibtex
-@misc{risk_aware_quantum_kernel_credit,
-  title = {A Hybrid Risk-Aware Quantum-Classical Framework for Cost-Sensitive Credit Risk Classification},
-  author = {Author information to be added},
-  year = {2026},
-  note = {Code repository for Soft Computing submission}
-}
+The portable replay was verified with Python 3.14.4, NumPy 2.4.3, pandas 3.0.1
+and SciPy 1.17.1. It does not require quantum simulation or original datasets.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python analysis/reproduce_aggregates.py --output-dir /tmp/quantum-kernel-replay
+python analysis/reproduce_runtime_components.py --output-dir /tmp/quantum-kernel-runtime
+python -m unittest discover -s tests -v
 ```
+
+The replay reconstructs all 632 paired comparisons from 6320 seed differences,
+reapplies their seven complete original Holm families, checks the geometry
+summaries, and checks the 1440 fixed-model cost-ratio aggregate rows. It does not
+reselect thresholds from customer scores or train models.
+
+## Scientific Protocol
+
+- German Numeric, South German, HMEQ and Taiwan use ten shared seeds 10 through
+  100 in increments of 10, with stratified 80/10/10 training/validation/test splits.
+- German Numeric and South German are related representations of one data
+  source, not independent populations.
+- Training risk scores use five-fold cross-fitting. Models and validation-cost
+  thresholds are fixed before each run's test evaluation.
+- The principal cost is `5FN + FP`. Fixed-model 2:1 and 10:1 sensitivity changes
+  validation thresholds while retaining models selected under 5:1.
+- Random and Shuffled controls address different information comparisons.
+  Random costs are averaged over three realizations within each seed.
+- Matched Shuffled Geometry evaluates Gram matrices without fitting shuffled
+  classifiers; its geometry summaries do not supply classifier costs.
+
+See [Reproduction](docs/REPRODUCIBILITY.md) and
+[Statistical Definitions](docs/STATISTICS.md) for scope and interpretation.
+Original full experiment runners retain their completed-run safeguards and
+archival dependencies. They are supplied as implementation records, not as a
+new automatic campaign to launch after cloning.
+
+## Environments and Data
+
+The original fitting and GPU Gram environment differs from the portable
+statistics environment. See [Environment Notes](environments/README.md) and
+[Data Inventory](data/README.md). No source code is rewritten to imply that
+the different environments or fitting procedures were identical.
+
+## License
+
+Original project code is distributed under the [MIT License](LICENSE).
+Benchmark datasets retain their original providers' terms.

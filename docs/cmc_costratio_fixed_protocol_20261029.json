@@ -1,0 +1,23 @@
+{
+  "analysis_id": "cmc_costratio_fixed_20261029",
+  "date": "2026-10-29",
+  "scope": "Descriptive fixed-model threshold sensitivity requested in professor final feedback; no new fitting or hyperparameter search",
+  "parent_runs": ["cmc_pca7_repeated_20261020", "cmc_budget_riskonly_20261026"],
+  "datasets": ["german_numeric", "south_german", "hmeq", "taiwan"],
+  "seeds": [10,20,30,40,50,60,70,80,90,100],
+  "kernels": ["RBF-SVM", "QSVC"],
+  "models": ["separately_selected_baseline9", "full180_soft_gate", "full180_rank_append", "independently_tuned_risk_only_at5", "raw_RF_at5", "raw_XGBoost_at5"],
+  "ratios": [2,5,10],
+  "cost": "ratio * FN + FP; FP cost1",
+  "expected_comparison_contexts": 480,
+  "expected_unique_frozen_score_sources": 440,
+  "expected_evaluation_rows": 1440,
+  "fixed": ["customer splits", "preprocessing", "risk teachers", "all model parameters and fitted weights", "representation", "landmark search decisions"],
+  "primary_scores": "Archived final exact-model validation/test margins, never proxy search-test scores; raw RF/XGBoost scores use the already selected original-feature reference candidate",
+  "threshold_selection": "Minimize ratio*FN+FP on validation only; use every unique score plus the all-negative cut. Among equal cost cuts use proximity to0 for margins and1/(ratio+1) for probability references. Retain archived candidate-order tie precedence: descending for PCA7/reference and ascending for independently tuned Risk-only.",
+  "ratio5_control": "Reproduce archived thresholds, validation cost and test FN/FP/cost for all480 contexts before reporting other ratios",
+  "test_access": "Store all1440 selected validation thresholds in a new selection lock before loading test labels for this analysis; parent tests were previously examined",
+  "inference": "Means and sample SD over10 seeds; paired differences and directional counts are descriptive. No new p values, confidence intervals or multiplicity families.",
+  "limitations": ["Models were selected under5:1, not independently optimized for2:1 or10:1", "Does not measure optimal ratio-specific model ranking", "Not a refit, an external confirmation, or a reevaluation of every Random/Shuffled control", "Shared Soft Gate Risk-only scores are not independent replications"],
+  "release_scope": "Prepare a local supplementary review package; no public deposit or journal upload without author confirmation"
+}

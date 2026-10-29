@@ -1,0 +1,152 @@
+{
+  "run_id": "cmc_professor_followup_20261022",
+  "authorization": "User explicitly requested all experiments addressing the professor's second feedback on2026-10-22. Existing completed PCA7/PCA9 and their frozen inputs remain read-only.",
+  "upstream_run": "cmc_pca7_repeated_20261020",
+  "datasets": [
+    "german_numeric",
+    "south_german",
+    "hmeq",
+    "taiwan"
+  ],
+  "random_datasets": [
+    "hmeq",
+    "taiwan"
+  ],
+  "seeds": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "learners": [
+    "RBF-SVM",
+    "QSVC"
+  ],
+  "methods": [
+    "gbdt_soft_gate",
+    "gbdt_rank_append"
+  ],
+  "random_draws": [
+    1,
+    2,
+    3
+  ],
+  "pca_components": 7,
+  "auxiliary_qubits": 1,
+  "calibration": {
+    "base": "Exact immutable160-tree depth3 XGB risk teacher scores from completed PCA7; no XGB retraining is needed to isolate post-hoc calibration. Stronger independently validation-tuned200-tree XGB reference is retained separately, not mislabeled as the same teacher.",
+    "fit": "Fit sigmoid and isotonic calibrators exclusively to training5OOF probabilities and labels. Apply the single resulting map to validation/test full-training teacher scores. Do not describe calibrated training predictions as cross-fitted, and do not inject calibrated training scores into a newly trained SVM.",
+    "methods": [
+      "raw",
+      "sigmoid",
+      "isotonic"
+    ],
+    "sigmoid": "Unweighted sklearn LogisticRegression(penalty=None,solver=lbfgs,max_iter=3000,tol=1e-10) on scalar raw probabilities; record slope and convergence, no validation/test fitting.",
+    "isotonic": "sklearn IsotonicRegression(out_of_bounds=clip), fitted on trainingOOF only.",
+    "thresholds": [
+      "probability_0.5",
+      "bayes_1_6",
+      "validation_cost",
+      "validation_cost_rank_stable"
+    ],
+    "tie_rules": "validation_cost uses original probability-reference nearest1/6 among validation minimum-cost candidate cuts. rank_stable uses the highest score cut among equal minimum validation costs, invariant to strictly increasing transformations. Never choose a tie or calibration variant from test outcomes."
+  },
+  "random_control": {
+    "features": "Independent Uniform(0,1) scalar for each original row and each of3 fixed draws. Deterministic SeedSequence(dataset_index,outer_seed,draw,part,20261022). No label or teacher score used to generate it.",
+    "architecture": "Same PCA7 backbone and independent auxiliary Ry qubit as actual Rank Append;8qubits QSVC or8coordinates RBF. No extra entanglement. Both learners use the same random scalar per row/draw.",
+    "choices": [
+      "own_zero",
+      "tuned",
+      "matched"
+    ],
+    "tuned": "Same positive20lambda x3geometry x3C validation-only search as parent. HMEQ/Taiwan512-landmark proxy search followed by full-training exact SVC and its own validation-cost threshold.",
+    "matched": "Reuse only the actual parent's validation-selected lambda/C/geometry, replace risk by independent random scalar, fit a fresh full-training exact SVC and choose its own validation threshold.",
+    "aggregation": "Average3 random-draw costs within each outer seed before inference. n remains10, never30. Retain every draw, including unfavorable ones."
+  },
+  "matched_backbone": {
+    "tasks": "For both actual methods, datasetsHMEQ/Taiwan and both kernels, refit risk-free lambda0 with C/geometry fixed to the parent's actual risk-selected values, and use its own validation threshold. Actual risk model remains the immutable parent model.",
+    "purpose": "Associate within-seed centered-label alignment/effective-rank changes with matched-backbone cost reduction, both full test and same256-test-row subset. Descriptive Spearman rho only, no independence-based correlation p-values or causal mechanism claims."
+  },
+  "C_grid": [
+    0.01,
+    1,
+    100
+  ],
+  "lambdas": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1
+  ],
+  "geometries": [
+    {
+      "reps": 1,
+      "alpha": 0.5,
+      "gamma_factor": 0.1
+    },
+    {
+      "reps": 2,
+      "alpha": 0.5,
+      "gamma_factor": 1
+    },
+    {
+      "reps": 1,
+      "alpha": 1,
+      "gamma_factor": 10
+    }
+  ],
+  "nystrom_landmarks": 512,
+  "exact_search_max_rows": 4096,
+  "statistics": {
+    "primary_cost_family": 100,
+    "breakdown": "72 standalone/calibration/fusion contrasts (18x4data),8 tuned-baseline QSVC-minus-RBF gain contrasts (2methods x4data),12 random-control contrasts (3 x2data x2kernels),8 actual-risk versus matched-backbone contrasts (2methods x2data x2kernels). One Holm100 family; no adjusted results until complete.",
+    "secondary_calibration_family": 40,
+    "calibration_breakdown": "2 calibrated-minus-raw improvements x5metrics(AUROC,AP,Brier,log_loss,ECE10) x4data. Holm40, direction higher AUROC/AP and lower losses/ECE.",
+    "inference": "Approximate Nadeau-Bengio corrected resampled t with df9,variance multiplier.225. Individual95% intervals are not simultaneous. Zero variance p1 and undefined CI. Preserve original184 contrasts/Holm unchanged.",
+    "correlation": "Descriptive only because10 overlapping holdouts are not independent and parameters/test observations have been studied previously."
+  },
+  "resources": {
+    "max_workers": 27,
+    "max_exact_workers": 8,
+    "cpu_limit_fraction": 0.85,
+    "memory_limit_fraction": 0.8,
+    "memory_safety_gib": 8,
+    "gpu_devices": [
+      0,
+      1
+    ],
+    "per_job_threads": 1,
+    "policy": "CPU85% admission, not instantaneous hard cap. Measure4 full-size HMEQ/Taiwan random probes before launch. Preserve healthy fits on pressure. Device-locked GPU Gram; CPU Aer exact double7/8qubit states."
+  },
+  "planned": {
+    "calibration_pairs": 40,
+    "random_jobs": 120,
+    "matched_backbone_jobs": 80,
+    "remote_jobs": 200,
+    "random_draws": 3
+  },
+  "test_policy": "Previous PCA7 test results are already known: all work is exploratory follow-up, not new external confirmation. New fitting/selecting code never reads test labels. Lock all200 new models/threshold sets before reading labels for new random/matched evaluation. Calibration branch has a separate all40-pair lock and is never used to revise the random scope/grid.",
+  "failure_policy": "Freeze source/protocol before real fits. Preserve logs and failures; no automatic scientific retry. Local tests can be repaired before freezing. No edits to parent scientific files or sources."
+}

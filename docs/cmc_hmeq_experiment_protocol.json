@@ -1,0 +1,27 @@
+{
+  "status": "dataset_replacement_requested_during_previous_run",
+  "date": "2026-10-16",
+  "run_id": "cmc_20261016_hmeq_full",
+  "datasets": ["german_numeric", "south_german", "taiwan", "hmeq"],
+  "replaces_dataset": "give_me_some_credit",
+  "previous_run_id": "cmc_20261015_full",
+  "reason": "사용자가 GMSC 대신 HMEQ를 사용하도록 요청했다. 기존 실행과 데이터·결과를 보존하고 새 실행명으로 비교한다.",
+  "seeds": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+  "independent_source_families": 3,
+  "train_cap": 0,
+  "test_cap": 0,
+  "outer_test_fraction": 0.2,
+  "inner_validation_fraction": 0.2,
+  "expected_sizes": {
+    "german_numeric": {"source": 1000, "train": 800, "test": 200},
+    "south_german": {"source": 1000, "train": 800, "test": 200},
+    "taiwan": {"source": 30000, "train": 24000, "test": 6000},
+    "hmeq": {"source": 5960, "train": 4768, "test": 1192}
+  },
+  "hmeq_source": "https://raw.githubusercontent.com/sassoftware/sas-viya-dmml-pipelines/cf9f13a0ce15c8968c879e9e6dcba11deeff200b/data/hmeq.csv",
+  "hmeq_target": "BAD=1 means default or serious delinquency; 1189 positives and 4771 negatives",
+  "hmeq_nominal": ["REASON", "JOB"],
+  "hmeq_missing": "Keep all rows; numeric training-median and nominal training-mode imputation; one-hot encoding inside each training boundary",
+  "unchanged": ["risk formulas", "PCA dimension 7", "seven representations and all classical references", "three selection policies", "20 core and 8 reference validation candidates", "cross-fitted calibrated training risks", "shared training angle scaling", "5FN+FP cost", "exact ideal CPU statevector kernel", "corrected paired intervals and Holm tests"],
+  "interpretation": "Dataset replacement and ten-seed scope were chosen during the study. Not a prospectively preregistered confirmatory study. SAS official distribution is verified; original bank identity and collection dates are not established here."
+}

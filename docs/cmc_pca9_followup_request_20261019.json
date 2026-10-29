@@ -1,0 +1,105 @@
+{
+  "request_id": "cmc_pca9_followup_20261019",
+  "status": "queued_not_started",
+  "authorization": "2026-10-19 user requested a separate PCA9 experiment after the current experiment finishes, with parallel server execution and priority to German Numeric, South German and HMEQ.",
+  "upstream_run": "cmc_20261019_overnight_risk_v4",
+  "upstream_protocol": "docs/cmc_overnight_risk_v4_protocol_20261019.json",
+  "local_root": "/Users/jay/Documents/Coding/11_school/01_personal_study/quantum_kurnel",
+  "remote_root": "/workspace/quantum_kernel",
+  "container": "quantum-cmc-a100",
+  "run_id_prefix": "cmc_pca9_",
+  "start_gate": {
+    "condition": "Wait for all current v4 work, finalization and successful audits to finish; do not overlap a PCA9 scientific fit with current v4.",
+    "required_completed_jobs": 1160,
+    "required_upstream_status": "completed",
+    "required_new_failures": 0,
+    "required_audits": [
+      "validation_receipt.json",
+      "continuation_validation_receipt.json"
+    ],
+    "required_archive": "Sync final upstream results and checkpoints locally and verify the audit receipts against their frozen sources.",
+    "required_process_check": "Verify current workers/controller have exited and their resource-slot locks are released; do not terminate them to start this request.",
+    "on_partial_failure_or_audit_failure": "Preserve evidence, report the obstruction and do not start the successor automatically. Do not silently retry or treat a deadline partial run as full completion."
+  },
+  "scope": {
+    "initial_datasets_in_priority_order": [
+      "german_numeric",
+      "south_german",
+      "hmeq"
+    ],
+    "dataset_rows": {
+      "german_numeric": 1000,
+      "south_german": 1000,
+      "hmeq": 5960
+    },
+    "taiwan": "Not included in this initial priority batch; request a later extension rather than silently increasing the planned scope.",
+    "method_families_fixed_before_upstream_test_release": [
+      "gbdt_soft_gate",
+      "gbdt_rank_append",
+      "rank_mixture",
+      "pls_metric"
+    ],
+    "learners": [
+      "RBF-SVM",
+      "QSVC"
+    ],
+    "baseline": "Separately validation-tuned no-risk model for each learner, dataset and seed.",
+    "ablations": "Keep the upstream normal/shuffled/constant risk controls, shuffled-training-label PLS control, separable Z-map QSVC controls, and raw/PCA classical references. Do not restrict the follow-up to previously favorable cells.",
+    "new_discovery_or_promotion": false,
+    "independent_data_sources": "South German and HMEQ are independent source families. German Numeric is a related-source representation sensitivity, not a third independent replication; exclude it from primary pooled evidence."
+  },
+  "scientific_design": {
+    "pca_components": 9,
+    "same_split_indices_as_upstream": true,
+    "seeds": [2010, 2020, 2030, 2040, 2050, 2060, 2070, 2080, 2090, 2100],
+    "split": "Use identical saved per-seed train80/validation10 indices and the same fixed test10 customer cohort as v4, not a freshly sampled split. Check raw-row identifiers and index hashes.",
+    "full_dataset": true,
+    "fit_policy": "One final SVM fitted on every training80 row. No SVM ensemble; no refit after final exact validation-threshold selection.",
+    "preprocessing": "New isolated dimension-aware implementation. Fit encoding/scaling/PCA only within the actual training partition. Refit PCA9 inside each risk OOF fold and inside each calibration training fold; never reuse PCA7 transformed arrays as PCA9.",
+    "risk_policy": "Maintain 5-fold OOF risk scores and inner3-fold sigmoid calibration with ensemble=False for LR. PCA-LR rank mixture now uses PCA9 and is explicitly a joint representation/teacher change. GBDT/raw-LR teachers still use the same original-feature inputs and fixed upstream hyperparameters; byte-for-byte teacher reuse is allowed only after verifying split, encoding, hyperparameter and input hashes, with provenance recorded.",
+    "pls_policy": "Use 9-component supervised PLS representation with PCA9 comparison, train-only fitting and shuffled-training-label control. Label it a supervised representation control, not direct risk-score injection.",
+    "angle_policy": "Use the same training-fitted linear_no_clip encoder. Do not introduce clipping or a new angle scale based on test performance.",
+    "quantum_policy": "Dimension-consistent 9-qubit linear ZZ feature map, same alpha and reps grid, CPU Aer exact noiseless double-precision statevectors. Rank Append adds one independent auxiliary qubit, making10. Do not label GPU Gram algebra as GPU circuit simulation or QPU execution.",
+    "gamma_policy": "RBF gamma reference uses the actual PCA9 angle dimension and training variance, replacing the upstream hard-coded7 consistently. Do not normalize by the appended risk coordinate count.",
+    "lambdas": [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00],
+    "zero_lambda": "Separate no-risk baseline only, never an eligible proposed-model strength.",
+    "C_grid": [0.01, 1, 100],
+    "geometries": [
+      {"reps": 1, "alpha": 0.5, "gamma_factor": 0.1},
+      {"reps": 2, "alpha": 0.5, "gamma_factor": 1},
+      {"reps": 1, "alpha": 1, "gamma_factor": 10}
+    ],
+    "selection": "Validation Business Cost5FN+FP only, with upstream deterministic tie rules. Keep exact search for <=4096 training rows and declared 512-landmark train-only Nystrom/LinearSVC search above4096. Lock parameters before one final exact SVC fit on the full80%; select a fresh threshold on that exact model's own validation margins.",
+    "test_policy": "Never inspect test scores/labels for feasibility, method choice, grid changes, convergence or scheduling. Freeze every planned PCA9 model and threshold globally before its final test release. Do not use upstream PCA7 test performance to select which of these four families or datasets to run."
+  },
+  "feasibility_and_verification": {
+    "check_after_upstream_completion": true,
+    "data_checks": "Verify encoded training feature count and effective rank permit9 PCA components in every nested fold, label mapping, missing values and all saved split hashes. Do not silently reduce dimensions.",
+    "technical_smoke": "Test synthetic9/10-qubit state dimensions, parameter binding, PSD/unit diagonal, constant-risk and lambda0 identities, array immutability, RBF gamma, auxiliary-qubit closed form, CPU/GPU Gram agreement, complete training-row coverage and validation/test isolation. Then use training/validation-only timing and peak-memory probes for the fixed methods; do not promote methods based on smoke performance.",
+    "statevector_scaling": "9-qubit states have512 complex amplitudes versus128 at7 qubits; auxiliary10-qubit states have1024 versus256 at8. State storage is4x, not a guarantee of4x total runtime or peak RAM. Gram matrix row counts remain unchanged.",
+    "freeze_before_scientific_run": "Use a new run ID, source snapshot, protocol, split/input hashes and preflight receipt. Preserve every v4 source and old result. No edits to active/frozen upstream files and no monkeypatching dimension globals in reused modules.",
+    "failure_policy": "Preserve logs, source, partial checkpoints and failures. Do not silently retry failed jobs or silently change methods/grid/dimensions. Notify on required user action."
+  },
+  "resources": {
+    "server": "Approved A100 host, existing dedicated container; no new credentials in files or logs.",
+    "cpu_target_fraction": 0.80,
+    "memory_target_fraction": 0.80,
+    "initial_max_single_thread_workers": 24,
+    "threads_per_worker": 1,
+    "fresh_process_per_job": true,
+    "admission": "After measuring9D task costs, use up to24 workers on the observed32 logical CPUs. Check host/cgroup limits and other workloads. Admit work only if projected host memory remains below80%, retaining at least20% host memory plus probe-based safety margin. Pause new admissions at high CPU/memory pressure; do not kill active fits merely to meet an instantaneous utilization target.",
+    "large_exact_fit_concurrency": "Derive a separate shared slot cap from measured full-size memory peaks and reserves; never equate24 search workers with24 simultaneous large dense exact fits.",
+    "gpu": "Reuse only preflight-verified device-locked GPU Gram computation where applicable; preserve CPU reference checks and report actual backend.",
+    "monitor": "Detached server supervision, live process/checkpoint heartbeat, resource peaks, bounded operations and preserved failure state. No invented completion estimate or hard80% guarantee from an admission heuristic. No arbitrary new scientific deadline inherited from the old run."
+  },
+  "reporting": {
+    "metrics": ["F1", "Recall", "Balanced Accuracy", "FN", "FP", "Business Cost", "Relative Cost Reduction", "training runtime", "inference runtime", "quantum kernel computation time"],
+    "within_pca9": "Report matched-seed baseline/proposed cost differences, mean cost, customer-cluster95% bootstrap CI, paired customer-cluster sign-flip raw p and planned-family Holm p, plus per-seed improvement directions. Do not count the10 seeds as independent test customers.",
+    "pca7_vs_pca9": "Pair identical dataset/seed/test customers. Separately report absolute PCA9-PCA7 cost difference, each dimension's risk-injection gain against its own baseline, and the difference of gains. Do not confuse greater relative gain from a worse baseline with a better final model.",
+    "multiplicity": "Predeclare complete contrast families before fitting. Preserve upstream within-dimension contrasts, add a separate complete PCA9-vs-PCA7 sensitivity family, retain incomplete scopes as not estimable and never shrink a Holm family after looking at outcomes.",
+    "inference_limits": "This is an exploratory dimension-sensitivity follow-up on reused datasets/test customers, not an untouched confirmatory test. Neither higher dimension nor larger quantum relative gain alone establishes quantum advantage. A separable auxiliary-qubit factor can be evaluated classically.",
+    "geometry": "Validation-only matched-geometry kernel alignment, class-similarity gap and effective rank may explain changes descriptively. No classifier/strength selection from geometry figures or final test labels.",
+    "provenance": "Distinguish new PCA9 fits, any verified teacher reuse, unchanged PCA7 results, all failed attempts, exact versus approximate lambda profiles and actual9/10-qubit simulator settings.",
+    "archive": "Sync results/checkpoints/figures locally, validate splits/full training rows/selection locks/predictions/recomputed metrics and source hashes, and report the three priority datasets in Korean without presenting partial seeds as complete results."
+  }
+}

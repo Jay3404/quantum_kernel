@@ -1,0 +1,16 @@
+{
+  "status": "queued_after_new_pca7",
+  "authorization": "2026-10-20 user explicitly requested stopping the current PCA9 and redoing PCA7 with seeds10..100 first, then redoing PCA9.",
+  "stopped_run": "cmc_pca9_20261020",
+  "stopped_run_receipt": "code/results/cmc_pca9_20261020/operations/authorized_stop_20261020/stop_receipt.json",
+  "upstream_run": "cmc_pca7_repeated_20261020",
+  "datasets": ["german_numeric", "south_german", "hmeq"],
+  "seeds": [10,20,30,40,50,60,70,80,90,100],
+  "pca_components": 9,
+  "split_policy": "Use exactly the new PCA7 saved varying-test per-seed80/10/10 row IDs, not the old fixed cohort. Refine the new dimension-consistent implementation without editing active sources or monkeypatching existing modules.",
+  "scope": "Keep baseline, all four fixed methods, both kernels and all existing controls/references,20positive lambdas,3C,3geometries. No Taiwan in the initial PCA9 follow-up and no result-dependent removal or additions.",
+  "start_gate": "Only after new PCA7 all1160 jobs complete, new failures0, integrity audit passed, local final results/checkpoints synchronized, old workers/supervisor terminated and slots released. Preserve and report any blocker once, no automatic scientific retries.",
+  "resources": "CPU85%, memory80% plus8GiB reserve, fresh single-thread processes, new9D full-size feasibility and peak-memory measurement before choosing concurrency. No inherited scientific deadline.",
+  "inference": "Exploratory repeated-holdout dimension sensitivity on reused data/splits. Pair same-seed test customers and report absolute costs, own baseline gains and gain differences with overlap-aware approximate inference and fixed multiple-comparison families. Do not count German related representations or repeated/overlapping test customers as independent external replications.",
+  "test_policy": "Freeze the new PCA9 protocol and every planned model/threshold before its test release; do not resume the stopped incompatible fixed-test campaign or choose candidates from PCA7 final test performance."
+}

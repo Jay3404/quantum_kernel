@@ -1,0 +1,23 @@
+{
+  "status": "full_data_extension_fixed_before_full_data_results",
+  "date": "2026-10-15",
+  "extends": "cmc_experiment_protocol.json",
+  "reason": "User requested all experiments on full source datasets after reviewing capped-data results",
+  "datasets": ["german_numeric", "south_german", "taiwan", "give_me_some_credit"],
+  "seeds": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200],
+  "train_cap": 0,
+  "test_cap": 0,
+  "outer_test_fraction": 0.2,
+  "expected_sizes": {
+    "german_numeric": {"source": 1000, "train": 800, "test": 200},
+    "south_german": {"source": 1000, "train": 800, "test": 200},
+    "taiwan": {"source": 30000, "train": 24000, "test": 6000},
+    "give_me_some_credit": {"source": 150000, "train": 120000, "test": 30000}
+  },
+  "inner_validation_fraction": 0.2,
+  "changes": ["no training or held-out test subsampling", "one dataset-seed job at a time", "blockwise exact dense training kernel and blockwise predictions", "checkpoint each validation candidate and unique final fit"],
+  "unchanged": ["risk formulas", "PCA dimension 7", "all seven representations and classical reference models", "all three selection policies", "20 core and 8 reference validation candidates", "20 paired seeds", "5FN+FP primary cost", "training-only preprocessing and cross-fitted calibrated risks", "ideal CPU statevector fidelity kernel", "SVC balanced weights, tol=0.001 and no iteration limit"],
+  "sampling_sensitivity": "Not rerun: no subset selection exists when every source row is used. Earlier capped-data sensitivity remains a separate study.",
+  "kernel_approximation": false,
+  "interpretation": "An extension chosen after capped-data results, not a preregistered independent confirmatory study. No in-sample evaluation and no claim of four independent source families."
+}

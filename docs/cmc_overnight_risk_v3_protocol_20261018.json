@@ -1,0 +1,215 @@
+{
+  "run_id": "cmc_20261018_overnight_risk_v3",
+  "preflight_history": [
+    {
+      "run_id": "cmc_20261018_overnight_risk",
+      "scientific_trials_started": 0,
+      "failure": "Prior preservation check used the new seeds instead of original10..100. Monitor/log/source snapshot retained; no result-based method or gate changes."
+    },
+    {
+      "run_id": "cmc_20261018_overnight_risk_v2",
+      "failure": "Persistent angle-dictionary alias was overwritten by quantum states for metric/residual representations across strengths. Preserve all artifacts and sources; exclude this implementation attempt from method evidence. No performance-based hypotheses or gates were changed.",
+      "test_results_consulted": false
+    }
+  ],
+  "source_run": "cmc_20261018_single_811",
+  "authorization": "2026-10-18 사용자 요청: 10월19일11:30 KST까지 위험 주입 중심의 연체자/정상 분리 성능 개선을 폭넓게 탐색하고 유망한 방법을 전체 평가한다. 문헌 기반 다른 방법도 허용. 기존 결과와 FICO는 보존한다.",
+  "deadline_utc": "2026-10-19T02:30:00+00:00",
+  "compute_deadline_utc": "2026-10-19T01:45:00+00:00",
+  "new_full_cutoff_utc": "2026-10-19T01:00:00+00:00",
+  "datasets": [
+    "german_numeric",
+    "south_german",
+    "taiwan",
+    "hmeq"
+  ],
+  "seeds": [
+    2010,
+    2020,
+    2030,
+    2040,
+    2050,
+    2060,
+    2070,
+    2080,
+    2090,
+    2100
+  ],
+  "discovery_seeds": [
+    2010,
+    2020,
+    2030
+  ],
+  "methods": [
+    "multiply",
+    "feature_specific",
+    "feature_normalized",
+    "rank_shift",
+    "logit_shift",
+    "rank_append",
+    "logit_append",
+    "rank_product",
+    "logit_product",
+    "rank_mixture",
+    "logit_mixture",
+    "soft_gate",
+    "hellinger_product",
+    "uncertainty_mixture",
+    "polynomial_risk",
+    "residual_risk",
+    "lda_stretch",
+    "within_whiten",
+    "nca_metric",
+    "nca_risk",
+    "pls_metric",
+    "supervised_raw7",
+    "lda_axis",
+    "zz_phase",
+    "reupload",
+    "iqp_coupling",
+    "aligned_risk",
+    "lmnn_metric",
+    "raw_lr_rank_append",
+    "raw_lr_soft_gate",
+    "gbdt_rank_append",
+    "gbdt_soft_gate"
+  ],
+  "learners": [
+    "QSVC",
+    "RBF-SVM"
+  ],
+  "smoke_lambdas": [
+    0.05,
+    0.25,
+    0.5,
+    0.75,
+    1
+  ],
+  "lambdas": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1
+  ],
+  "C_grid": [
+    0.01,
+    1,
+    100
+  ],
+  "geometries": [
+    {
+      "reps": 1,
+      "alpha": 0.5,
+      "gamma_factor": 0.1
+    },
+    {
+      "reps": 2,
+      "alpha": 0.5,
+      "gamma_factor": 1
+    },
+    {
+      "reps": 1,
+      "alpha": 1,
+      "gamma_factor": 10
+    }
+  ],
+  "alignment": {
+    "sample_size": 256,
+    "maxfev": 72,
+    "quantum_alpha_bounds": [
+      0.1,
+      2
+    ],
+    "risk_gain_bounds": [
+      0.25,
+      4
+    ],
+    "classical_gamma_bounds": [
+      0.1,
+      10
+    ]
+  },
+  "metric_train_cap": 512,
+  "discovery_train_cap": 768,
+  "confirmation_train_cap": 2048,
+  "shortlist_families": 12,
+  "full_families": 4,
+  "promotion": {
+    "mean_rcr": 0.05,
+    "wins_of_ten": 7,
+    "minimum_recall_change": -0.02,
+    "minimum_balanced_accuracy": 0.55,
+    "definition": "All method/learner/dataset scopes are reported. Practical confirmation candidates need >=5% mean seed relative cost reduction vs independently tuned same-kernel baseline, >=7/10 strict seed wins, recall change>=-0.02 and balanced accuracy>=0.55. Corrected95%CI/rawp/Holm across all confirmation scopes are reported separately; statistical support is not claimed merely by promotion. Families ranked first by number of Holm<0.05 scopes then source-balanced mean improvement; at most4 families advance, both learners and all4 datasets/10seeds, not only favorable scopes."
+  },
+  "nystrom_landmarks": 512,
+  "exact_search_max_rows": 4096,
+  "workers": 28,
+  "exact_workers": 8,
+  "gpu_devices": [
+    0,
+    1
+  ],
+  "cost": "5FN+FP primary. Secondary2FN+FP and10FN+FP keep the5:1-selected fitted model and hyperparameters fixed, retune only the exact margin threshold on validation before test access. This is fixed-model cost-ratio sensitivity, not independently optimized cost-ratio-specific model selection. Never choose cost ratio on test.",
+  "split": "Within this campaign fix stratified test10% once per dataset, anchor20261018+dataset offset0/1/2/3. All10seeds2010..2100 split the remaining90% into train80/validation10. Thus no final-test customer occurs in ANY seed's smoke/training/model-family selection. Inside each training80, stratified75/12.5/12.5 gives inner-fit/tune/confirmation. Discovery uses3seeds/cap768 and inner-tune only. Confirmation uses10seeds/cap2048 and locks choices before inner-confirmation labels. Refit every encoding/scaler/PCA/OOF LR only on actual fit rows. German Numeric is evaluated as a related-encoding sensitivity only and is excluded from ALL family ranking/promotion statistics, because record alignment with South German is not certified; South German/Taiwan/HMEQ are the three primary source families. New anchor/seeds do not erase earlier exploratory reuse of these datasets.",
+  "selection": "Full model search uses every outer-training row, all positive0.05 lambdas, common3C and3geometries. Up to4096rows search kernels are exact SVC. Above4096, a standard train-only stratified512-landmark Nystrom factorization with float64 eigh and LinearSVC is a declared parameter-selection surrogate. Positive lambda/geometry/C and separate no-risk choice are locked on outer-validation cost before exact fitting. Final large-data models are exact precomputed-kernel SVC fitted once on all80% with locked parameters; exact validation margins get their own fresh threshold, never transfer an approximate threshold. Smaller exact-search models reuse the same fit margins. All final choices/thresholds across methods are locked before reading any outer-test labels. No SVM ensemble or refit after final exact threshold selection.",
+  "ablations": "Full normal/shuffled/constant for risk methods, normal/shuffled-training-label metric controls for purely supervised embedding methods, and no-entangling Z-map controls for QSVC. Each control is selected independently on validation. Training uses correct labels for final SVM in every arm. Baseline lambda0 and positive-only proposed are distinct. Also compare independently tuned same-kernel baseline, raw-feature LR/RF/XGBoost and shared-PCA risk controls. Classical circuit-analog methods are explicit controls, not claimed identical quantum circuits.",
+  "statistics": "Full uses a common fixed test cohort: never treat10training seeds as10independent test samples. For each customer average loss differences across10separately fitted single models, without averaging predictions. Stratified customer-cluster bootstrap5000replicates supplies95%CI; paired customer-cluster sign-flip19999replicates supplies two-sided MonteCarlo p under paired exchangeability. Intervals are conditional on development data, fitted models and stratified test prevalence, not all training-data uncertainty. Primary contrasts: own-no-risk, independently tuned same-kernel baseline, validation-selected classical reference, shuffled/constant where defined, separable quantum, Q-minus-RBF risk gain. Holm over all planned scopes; incomplete tests retainp=1 and remain not estimable. All10seeds required. German Numeric is labelled related-encoding exploratory sensitivity, not independent confirmatory evidence. Cost-ratio2/10 fixed-model threshold sensitivity has a separate paired-customer Holm family. Lambda profiles are descriptive only (exact search for small data, approximate search for large data), not dependent-seed significance tests. Smoke corrected-holdout p-values are selection diagnostics, not final evidence; ranking excludes German Numeric including its multiplicity influence.",
+  "resources": "28 single-thread CPU workers for bounded smoke/search;8 configured final exact slots, externally capped to3 concurrent large exact fits for host-memory safety, 24GiB host memory reserve. Optional preflight-verified float64/complex128 CuPy Gram computation serialized per exposed GPU device; Aer state preparation remains CPU exact statevector7/8qubits. No QPU/finite shots/noise. Do not claim GPU acceleration if preflight fails. Whole campaign process group stops at10:45KST after saving completed units and marking partial jobs; no new full family after10:00KST. Preserve failures, no silent retries or reboot restart.",
+  "integrity": "Freeze sources/protocol before execution; snapshot archive and hashes, data/split/prepared checksums, selection locks, score archives and every failure. All attempts remain under the new run. Previous experiments/FICO untouched. Existing datasets have been explored repeatedly, so fresh split seeds do not create a pristine external dataset or guarantee no research-level selection bias. No guarantee of reviewer acceptance or performance gains.",
+  "sources": [
+    {
+      "method": "NCA",
+      "url": "https://papers.nips.cc/paper/2566-neighbourhood-components-analysis.pdf",
+      "use": "scikit-learn NeighborhoodComponentsAnalysis, training-only metric learning"
+    },
+    {
+      "method": "LMNN",
+      "url": "https://jmlr.csail.mit.edu/papers/v10/weinberger09a.html",
+      "use": "metric-learn LMNN, training-only same-class neighborhoods and different-class margin"
+    },
+    {
+      "method": "quantum alignment",
+      "url": "https://arxiv.org/abs/2105.02276",
+      "use": "training-only alignment heuristic, bounded optimization budget, not guaranteed business-cost improvement"
+    },
+    {
+      "method": "quantum feature map",
+      "url": "https://www.nature.com/articles/s41586-019-0980-2",
+      "use": "Qiskit ZZ/Z states; distinguish kernel geometry and classifier cost"
+    },
+    {
+      "method": "benchmark design",
+      "url": "https://arxiv.org/abs/2403.07059",
+      "use": "matched classical controls, ablations and no automatic quantum advantage claim"
+    }
+  ],
+  "implementation_revision": {
+    "version": 3,
+    "repairs": [
+      "Copy angle/metric dictionaries and arrays for each representation before invoking frozen transformation algebra.",
+      "Assemble composite Gram matrices in1024-row blocks with identical float64 algebra."
+    ],
+    "verification": [
+      "Reuse each method/learner context across strengths and geometries; require unchanged real angles/metric arrays.",
+      "Compare blocked composite Gram matrices against frozen algebra.",
+      "Run frozen end-to-end lock, single-model and held-out-label tests through the adapter."
+    ],
+    "resource_guard": "Reserve global dense-fit slots3..7 until compute deadline, so at most3 large exact fits run concurrently across campaigns. Runtime scheduling only; scientific grids unchanged."
+  }
+}

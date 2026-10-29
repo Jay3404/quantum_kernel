@@ -1,0 +1,104 @@
+{
+  "run_id": "cmc_pca9_repeated_20261021",
+  "authorization": "2026-10-20 user explicitly authorized stopping the incompatible fixed-test PCA9, running fresh varying-test PCA7 seeds10..100 first, then fresh PCA9 on the same saved splits. PCA7 all1160/audits/archive/report/process/slot gates passed2026-10-21 before this preparation.",
+  "datasets": [
+    "german_numeric",
+    "south_german",
+    "hmeq"
+  ],
+  "seeds": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "pca_components": 9,
+  "learners": [
+    "RBF-SVM",
+    "QSVC"
+  ],
+  "methods": [
+    "gbdt_soft_gate",
+    "gbdt_rank_append",
+    "rank_mixture",
+    "pls_metric"
+  ],
+  "lambdas": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1
+  ],
+  "C_grid": [
+    0.01,
+    1,
+    100
+  ],
+  "geometries": [
+    {
+      "reps": 1,
+      "alpha": 0.5,
+      "gamma_factor": 0.1
+    },
+    {
+      "reps": 2,
+      "alpha": 0.5,
+      "gamma_factor": 1
+    },
+    {
+      "reps": 1,
+      "alpha": 1,
+      "gamma_factor": 10
+    }
+  ],
+  "exact_search_max_rows": 4096,
+  "nystrom_landmarks": 512,
+  "gpu_devices": [
+    0,
+    1
+  ],
+  "max_workers": 27,
+  "max_exact_workers": 8,
+  "exact_workers": 1,
+  "cpu_limit_fraction": 0.85,
+  "memory_limit_fraction": 0.8,
+  "memory_safety_gib": 8,
+  "split": "Use exactly the completed new PCA7 saved varying-test80/10/10 row IDs for every dataset/seed. Recompute deterministic stratified split seed and seed+103 and assert byte-identical saved split plus equal preprocessed raw matrices and equal leading7 PCA components. Never use the stopped fixed-test PCA9 splits.",
+  "preprocessing": "New independent9-component PCA and PCA-LR5OOF with nested3fold sigmoid ensemble=False inside fold-specific training preprocessing. Fresh raw-feature LR/XGB5OOF and full-training fits, no adopted scientific scores/models/search prefixes. The same seed shares fresh teacher scores only across its own planned models. PLS9 supervised original-feature representation is fitted on training labels only.",
+  "selection": "Same fixed four method families/controls/reference grids as PCA7, with9 PCA/PLS dimensions. Exact search<=4096 rows; full HMEQ512-landmark approximate search then one exact SVC on all4768 training rows and its own validation threshold. No test-driven method or scope changes, ensemble or refit after threshold selection.",
+  "test_policy": "Globally freeze all870 models/validation thresholds and all lambda profiles before releasing any PCA9 test labels or metrics. Block any new learning after selection_lock OR test_release. PCA7 final results are already known; keep predetermined methods/scope/grid rather than selecting from those results.",
+  "statistics": "Within-PCA9 fixed138 contrasts=46x3 datasets, with Holm138. Separately predeclare90 paired dimension contrasts=30x3: per dataset10 absolute model-cost contrasts (2kernels x baseline+4methods),8 changes in tuned-baseline gains,8 changes in own-zero gains,4 changes in QSVC-minus-RBF own-zero gains. Holm90 over that entire family, never only favorable cells. Same saved per-seed test customers; approximate corrected resampled t df9 variance multiplier.225 for both families. Report per-seed directions, mean/SD, original p/Holm p,95% approximate intervals and ratio-of-means versus mean-seed improvements separately. Zero variance p1/undefined interval. No independent-seed/customer claim and no fixed-cohort bootstrap/sign-flip.",
+  "statistics_source": "https://papers.neurips.cc/paper/1999/file/7d12b66d3df6af8d429c1a357d8b9e1a-Paper.pdf",
+  "inference_limit": "Exploratory repeated-holdout dimension sensitivity, not independent external confirmation: same previously studied datasets/seeds/splits and already public PCA7 results. Related German representations are not two independent original datasets. Distinguish risk-score injection, supervised PLS representation, raw-XGB versus PCA-LR input/teacher changes, absolute quality, gain differences and quantum-specific advantage.",
+  "resources": "CPU85% admission target, memory80% plus8GiB reserve, at most27 fresh single-thread one-job processes on32logical CPUs. Measure8 full HMEQ search/exact fits for9D before scheduling; choose separate exact slot count from actual peaks. Preserve healthy fits on pressure. CPU Aer exact double9/10-qubit states (512/1024 complex amplitudes); device-locked GPU Gram only. Check CPU/GPU Gram for9D RBF and512/1024 complex-state cases on each device.",
+  "preservation": "Preserve all completed PCA7 and stopped incompatible PCA9 scientific sources/results. New versioned wrappers explicitly reuse immutable dimension-generic mathematical functions, not module monkeypatches. Fresh preparations/risks/jobs. Preserve real preparation/probe/scientific failures without automatic retry.",
+  "upstream_run": "cmc_pca7_repeated_20261020",
+  "upstream_report_sha256": "80ef8faf54e6f1b4b9ba3f52d857c5c5b7c39fa1b25d86f7893b78fa34a191c6",
+  "followup_request_sha256": "67926f2440b707285d27fe4adada437225a3309d869b01a20f791f0bec3870c0",
+  "expected_jobs": 870,
+  "expected_prepared_pairs": 30,
+  "expected_nested_pca_fits": 750,
+  "full_size_hmeq_probes": 8
+}

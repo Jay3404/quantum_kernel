@@ -1,0 +1,17 @@
+{
+  "analysis_id": "cmc_matched_geometry_20261028",
+  "design": "Exploratory, descriptive reanalysis of previously locked outputs; not preregistration or external confirmation",
+  "parent_run": "cmc_pca7_repeated_20261020",
+  "datasets": ["german_numeric", "south_german", "hmeq", "taiwan"],
+  "seeds": [10,20,30,40,50,60,70,80,90,100],
+  "kernels": ["RBF-SVM", "QSVC"],
+  "methods": ["gbdt_soft_gate", "gbdt_rank_append"],
+  "expected_cases": 160,
+  "fixed_within_case": ["actual-risk selected geometry", "actual-risk selected lambda", "base Gram matrix", "customer positions", "labels"],
+  "shuffle": "Reuse original deterministic split-wise permutation: default_rng(seed+7919+part_index), train/tune/gate indices0/1/2. Permute full split before selecting geometry subset. One existing draw per seed, not a permutation null distribution.",
+  "metrics": ["centered label alignment", "entropy effective rank of uncentered unit-diagonal Gram"],
+  "cost_scope": "No cost assigned to matched-shuffled Gram: no newly fitted classifier. Separately tuned archived shuffled-model costs remain a different diagnostic.",
+  "prohibitions": ["model fitting", "threshold selection", "hyperparameter selection", "new hypothesis tests", "altering old Holm families", "editing parent inputs"],
+  "reconstruction": "Deterministic Gram reconstruction from stored PCA features, train-only encoder and locked geometry; verify actual product against archived Gram before constructing matched shuffled product.",
+  "interpretation": "All160 related cases retained; descriptive counts and means only. Overlapping holdouts, one existing shuffle and post-hoc settings preclude independent-sample or causal claims. Full-split score multiset preserved; the geometry subsample multiset need not be identical."
+}

@@ -1,0 +1,122 @@
+{
+  "results/pca7/seed_metrics.csv": {
+    "original_identifier": "pca7_seed_metrics.csv",
+    "sha256": "2146f2fcc469b696d3b6c752f793618d0c041bcb0557a77884d8c6d08ce39200"
+  },
+  "results/pca7/lambda_seed_metrics.csv": {
+    "original_identifier": "pca7_lambda_seed_metrics.csv",
+    "sha256": "59a7eb1783be36d737f6bc9b67044394c8c6f3a28346da60f4c7d77c0ab99bf6"
+  },
+  "results/pca7/paired_Holm184.csv": {
+    "original_identifier": "pca7_paired_cost_Holm184.csv",
+    "sha256": "febf8f868f8ecd360e163dcff5ab90465705b1f263f257e8ec9c413bf1fc6b09"
+  },
+  "results/pca9/seed_metrics.csv": {
+    "original_identifier": "pca9_seed_metrics.csv",
+    "sha256": "e115f10456bb9c4f6b6317c0f8ea9d1c95607b4da624f98292b360ddc8850a2a"
+  },
+  "results/pca9/paired_Holm138.csv": {
+    "original_identifier": "pca9_pairs_Holm138.csv",
+    "sha256": "c1f15cb15ecd28957a490c10dc0f3480e02ca9076884bb552082147a0bce544d"
+  },
+  "results/pca9/dimension_pairs_Holm90.csv": {
+    "original_identifier": "pca7_pca9_pairs_Holm90.csv",
+    "sha256": "15ec375110a3d9cfe0059fe8353bad62fc224fe71c97bbe44b725ea975229f5f"
+  },
+  "results/controls/threshold_seed_metrics.csv": {
+    "original_identifier": "threshold_seed_metrics.csv",
+    "sha256": "abbdb7060aed012335ec4ebea49c0a62da5b8138735465a95fbc926fdff87e2d"
+  },
+  "results/controls/teacher_seed_metrics.csv": {
+    "original_identifier": "teacher_seed_metrics.csv",
+    "sha256": "2f36d8cdde3bae22746cadb5268ecd56a64032abe64b7b32e8cacc14dee0cc20"
+  },
+  "results/controls/calibration_cost_metrics.csv": {
+    "original_identifier": "calibration_metrics.csv",
+    "sha256": "fbc1bed29bb5df6afcf6e5acadf3c6f3ca2692f82315d54372b309068df033da"
+  },
+  "results/controls/calibration_probability_metrics.csv": {
+    "original_identifier": "calibration_probability_metrics.csv",
+    "sha256": "9e9e4c65ed5b7f24153cfada8ff5a6a665408b9ed4c22c28758316a31cf1caed"
+  },
+  "results/controls/random_backbone_seed_metrics.csv": {
+    "original_identifier": "followup_new_seed_metrics.csv",
+    "sha256": "3dd8194de790ab4cb036498366554416da4a72ec85f44d1703478273030c1b3b"
+  },
+  "results/controls/paired_Holm100_40.csv": {
+    "original_identifier": "followup_paired_Holm100_40.csv",
+    "sha256": "ae6a205bdb3868597c47016c0a6ff53d52893ebc8e38b87f9b3689af44d456e8"
+  },
+  "results/controls/inherited_risk_only_Holm16.csv": {
+    "original_identifier": "risk_only_pairs_Holm16.csv",
+    "sha256": "4cddffbe04d772aba089da9ecd6a30bcc5d3b1557a488a24f54a08a21d46caf2"
+  },
+  "results/controls/shuffled_summary.csv": {
+    "original_identifier": "shuffled_contrasts.csv",
+    "sha256": "5cd88992927b88f75631e1f0cc3c5a31cbd44f1763452e02f3a987ba2eb7dd89"
+  },
+  "results/search_budget/seed_metrics.csv": {
+    "original_identifier": "budget_riskonly_seed_metrics.csv",
+    "sha256": "0fc99f8ffd271e37d53f122ed89b9776c788a2c28b291b1046c276754b1515d0"
+  },
+  "results/search_budget/paired_Holm64.csv": {
+    "original_identifier": "budget_riskonly_pairs_Holm64.csv",
+    "sha256": "ac7d4fff20925d1b07f2c89383318836be2c970f277d34728666964b59c26a91"
+  },
+  "results/search_budget/cost_summary.csv": {
+    "original_identifier": "budget_riskonly_cost_summary.csv",
+    "sha256": "823dde1c71dab6085be26b4b1bb7f6ec4c239138be1cfb127a866a33dd638844"
+  },
+  "results/search_budget/classification_summary.csv": {
+    "original_identifier": "budget_riskonly_classification_summary.csv",
+    "sha256": "ebc9e1ae8ef99ae22644fb5f106335c8464b76e1beae4597a3bf91b3a9812956"
+  },
+  "results/search_budget/paired_seed_differences.csv": {
+    "original_identifier": "budget_riskonly_paired_seed_differences.csv",
+    "sha256": "49b9a74ab578162bc4383fc27ce1d50cd4a66e4aface6099d9f8e378daecff9b"
+  },
+  "results/geometry/matched_cases.csv": {
+    "original_identifier": "matched_geometry_cases.csv",
+    "sha256": "86dbafb922bf153e953d73d1cd9aedc3a59bf352ed86fdd026ab8ea68c0a7faa"
+  },
+  "results/geometry/matched_summary.csv": {
+    "original_identifier": "matched_geometry_summary.csv",
+    "sha256": "f98aad7dcfc0a556020adaedfd483080337a697862aaf38a7970833f746216a7"
+  },
+  "results/geometry/backbone_cases.csv": {
+    "original_identifier": "geometry_seed_metrics.csv",
+    "sha256": "e7130fdfce2b77e4518b508d8b72ed7b50a61cdeb2d8cf15e1ede33ff4c700c0"
+  },
+  "results/geometry/correlations.csv": {
+    "original_identifier": "geometry_correlations.csv",
+    "sha256": "5be9d7e21714c3202258207a766f5321345d0749ba5a1109e11ae38ef53ef91d"
+  },
+  "results/runtime/preparation.csv": {
+    "original_identifier": "preparation_runtime.csv",
+    "sha256": "580edb0daaee8cece49d57bf90ff2d0ab985173d7935ae0eb0294b97c881a231"
+  },
+  "results/runtime/seed_components.csv": {
+    "original_identifier": "runtime_seed_components.csv",
+    "sha256": "7c394ea69e5a198a6130debe8fe93f6214d5adaff9b5fb5e51c6ae41c3b482fa"
+  },
+  "results/cost_sensitivity/seed_metrics.csv": {
+    "original_identifier": "costratio_fixed_v12/seed_metrics.csv",
+    "sha256": "5c7126b3f0c60eb555cb589e1f765b05d269059100343508f0058c9651e5052b"
+  },
+  "results/statistics/paired_seed_differences.csv": {
+    "original_identifier": "paired_seed_differences_all632.csv",
+    "sha256": "92868625e59751571f6567facd0637085d14ac5a1fc51cc63933e54e1f3f4390"
+  },
+  "results/statistics/comparison_index.csv": {
+    "original_identifier": "final_trace_v10/comparison_index.csv",
+    "sha256": "fe87ba054a02df863fd9093c6a1c55eb36c52354ccda7b5fbd7867db78872683"
+  },
+  "results/statistics/paired_statistics.csv": {
+    "operation": "column-aligned copies of all original632 summary rows",
+    "source_index_sha256": "fe87ba054a02df863fd9093c6a1c55eb36c52354ccda7b5fbd7867db78872683"
+  },
+  "results/cost_sensitivity/cost_summary.csv": {
+    "operation": "tidy projection of original mean/sample-SD summary",
+    "source_sha256": "3f77c8700b708dce6f89d6b626a21a974ddb6fce8bd729633f915cf5d3d13246"
+  }
+}

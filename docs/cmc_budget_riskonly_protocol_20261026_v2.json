@@ -1,0 +1,112 @@
+{
+  "run_id": "cmc_budget_riskonly_20261026",
+  "authorization": "The user authorized necessary experiments responding to the professor's 26 October feedback. Do not introduce new algorithm families.",
+  "parent_run": "cmc_pca7_repeated_20261020",
+  "server_parent": "/home/user/workspaces/jaemin/quantum_kernel",
+  "datasets": [
+    "german_numeric",
+    "south_german",
+    "hmeq",
+    "taiwan"
+  ],
+  "seeds": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "kernels": [
+    "RBF-SVM",
+    "QSVC"
+  ],
+  "methods": [
+    "gbdt_soft_gate",
+    "gbdt_rank_append"
+  ],
+  "budget_control": {
+    "fixed_lambda": 0.5,
+    "rationale": "Fix a moderate midpoint risk strength for both methods, kernels and every dataset, without selecting the strength using the new test comparisons. Both baseline and conditioned model select among exactly the same 3 C values x 3 geometries = 9 candidates. This is a restricted-search sensitivity analysis, not a causal decomposition of candidate-count bias or a claim of equal model complexity.",
+    "C_grid": [
+      0.01,
+      1,
+      100
+    ],
+    "geometry_ids": [
+      0,
+      1,
+      2
+    ],
+    "threshold": "Own validation minimum 5FN+FP, nearest decision-function zero for ties; settings tie by cost, lambda, C, geometry, as in parent.",
+    "german": "Reuse every stored exact full-training candidate margin. Verify each selected row's validation threshold and cost; no refit needed.",
+    "large": "Select the 9-candidate winner from the parent's archived 512-landmark validation search. Refit one exact full-training SVC at that setting and select its own validation threshold before test-label release. Proxy test scores must not be reported as final exact-model test results.",
+    "baseline": "Use the separately validation-selected 9-candidate original baseline, not a method-specific lambda0 control.",
+    "expected_conditioned_models": 160,
+    "new_full_exact_fits_for_large_datasets": 80
+  },
+  "independent_risk_only": {
+    "question": "How does the full product compare with a risk-only representation independently selected by validation, instead of inheriting parent settings?",
+    "inputs": "Immutable parent's 5OOF XGB training ranks and full-training teacher validation/test ranks; preserve customer splits and teacher preprocessing boundaries; no risk-estimator refit.",
+    "C_grid": [
+      0.01,
+      1,
+      100
+    ],
+    "lambda_grid": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1
+    ],
+    "geometry_ids": [
+      0,
+      1,
+      2
+    ],
+    "selection": "Own validation minimum 5FN+FP and deterministic cost/lambda/C/geometry ties. Exact native libsvm SVC on all training rows; cache256MiB, balanced weights, tol.001. Persist every trial and all selected models/margins. No selected-model refit after threshold choice.",
+    "deduplication": "SG has the same risk-only Gram in RBF and QSVC contexts and geometry has no role. Q-RA also has no base-geometry dependence. Fit distinct C/lambda settings once and record exact duplicates with provenance; expand to all 160 parent contexts without counting them as independent observations. RBF-RA retains its 3 training-derived bandwidth options.",
+    "implementation": "Use exact 3D finite feature maps with linear SVC for SG and Q-RA; scalar RBF SVC for RBF-RA. The Q label identifies a parent context, not a quantum-only risk kernel.",
+    "scope": "Exact full-row validation tuning gives a strong diagnostic competitor. This differs from the large full model's approximate selection algorithm; report this rather than claiming all training/search algorithms are identical.",
+    "expected_parent_contexts": 160,
+    "expected_distinct_contexts": 120
+  },
+  "test_lock": "Freeze sources, input hashes, all model settings and own validation thresholds before this new run reads test labels. No scientific fitting or selection after its global lock/test release. The local archive-only German replay is a separate scoped analysis with zero new fits; its eight cells are not the completed four-representation follow-up.",
+  "statistics": {
+    "family_size": 64,
+    "cells": "4 representations x2 kernels x2 methods =16",
+    "contrasts": [
+      "baseline9_minus_conditioned9",
+      "conditioned9_minus_conditioned180",
+      "tuned_risk_only_minus_conditioned180",
+      "tuned_risk_only_minus_conditioned9"
+    ],
+    "method": "10 seed-paired differences; mean, sampleSD, wins/ties/losses; approximate Nadeau-Bengio corrected resampled t df9, variance multiplier .225; individual95%CI and rawp, Holm64 over every listed cell/contrast. No adjusted p before all64 comparisons exist. Preserve every older correction family unchanged. Zero variance gives p1 and undefined interval.",
+    "limits": "Exploratory sensitivity analyses on repeatedly examined, overlapping splits. Fixing lambda0.5 now is not prospective registration of the original study. German representations are related. Equal candidate count does not mean equal function-class capacity, input information or computational effort. Do not suppress adverse results."
+  },
+  "resources": "New fits only on the approved server under the plural workspaces/jaemin path after SSH authentication and container-mount verification. Before scheduling, run11 full-training/validation-only probes: HMEQ/Taiwan xRBF/QSVC xSoftGate/RankAppend (8) plus3 Taiwan risk-only representations. CPU85% admission ceiling, maximum27 single-thread workers with measured per-job RAM budgets,80% host/cgroup cap plus20% host reserve and8GiB additional reserve; separate measured exact-fit slots. Preserve scientific failures; no automatic retries or cancellation of healthy fits. Keep all parent files read-only.",
+  "external_validation": "No available local dataset may be called unseen without a provenance check. This task prioritizes budget and independent risk-only controls. A genuinely new external cohort requires its own frozen acquisition, preprocessing, label/cost semantics and core analysis before accessing outcomes; do not relabel Australian/HELOC/GiveMeSomeCredit already in this project as independent new confirmation.",
+  "reporting": "Report completion denominators and actual resource checks; audit saved predictions, thresholds, row counts and hashes. Never report proxy search performance or incomplete German-only results as the complete new experiment.",
+  "protocol_revision": "v2: expand train/validation-only memory probes from7 to11 to cover both SG and RA; scientific comparisons unchanged",
+  "supersedes_operational_resources_only": "cmc_budget_riskonly_protocol_20261026.json; preserve original archive-analysis hash"
+}
